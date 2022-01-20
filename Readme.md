@@ -1,5 +1,6 @@
 Tecnologias utilizadas no projeto:
 
+- express - Cria o servidor Node.js para servir a página estática.
 - Socket.io - Responsável pela criação do servidor p/ estabelecer a comunicação baseada em eventos, em real-time.
 
 Para inciar a aplicação:
