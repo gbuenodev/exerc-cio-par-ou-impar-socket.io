@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Par ou Ímpar</title>
+</head>
+
+<body>
+  <main>
+    <h1 id="title">Par ou Ímpar</h1>
+    <aside>
+      <p>Usuários conectados:</p>
+      <ul id="player-list"></ul>
+    </aside>
+
+    <div id="game-pannel">
+      <p>Você é: <span id="odd-even"></span></p>
+      <form id="play">
+        <label name="number">
+          Selecione seu número:
+          <input id="selection" type="number" min="1" max="10">
+        </label>
+        <button id="play-btn">JOGAR</button>
+      </form>
+
+      <p id="total"></p>
+      <p id="win-lose"></p>
+    </div>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    const playersList = document.querySelector('#player-list');
+    const oddEven = document.querySelector('#odd-even');
+    const playForm = document.querySelector('#play');
+    const selection = document.querySelector('#selection');
+    const playBtn = document.querySelector('#play-btn');
+    const winOrLose = document.querySelector('#win-lose');
+    const total = document.querySelector('#total');
+
+    socket.on('updatePlayers', (players) => {
+      playersList.innerHTML = '';
+      players.forEach((player) => {
+        const newPlayer = document.createElement('li');
+        newPlayer.innerHTML = player;
+        playersList.appendChild(newPlayer);
+      })
+    });
+
+    socket.on('updateTeam', (team) => {
+      oddEven.innerHTML = `${team}`;
+    });
+
+    playForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      socket.emit('play', selection.value);
+      playBtn.disabled = true;
+    });
+
+    socket.on('winners', ({ sum, result }) => {
+      let message = '';
+      if (oddEven.innerHTML === result) {
+        message = 'Parabéns você ganhou!';
+      } else {
+        message = 'Não foi desta vez!';
+      }
+      total.innerHTML = `A soma foi: ${sum}`;
+      winOrLose.innerHTML = message;
+    });
+  </script>
+</body>
+
+</html>
