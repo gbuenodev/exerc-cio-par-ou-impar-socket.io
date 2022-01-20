@@ -6,6 +6,7 @@ Tecnologias utilizadas no projeto:
 Para inciar a aplicação:
 
 - Faça o download do repositório
+- Instale as dependências do projeto com npm install
 - Use o script npm start no seu terminal
 - Acesse sua aplicação através do localhost:3000
 - Cada acesso através do browser irá gerar uma conexão (simulando vários jogadores entrando na aplicação)
